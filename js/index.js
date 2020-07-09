@@ -6,6 +6,20 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let toDoList = [];
 
+    const removeTask = (event) => {
+        let index;
+
+        toDoList.forEach((item, i) => {
+            if (item === index) {
+                index = i;
+            }
+        });
+
+        event.target.closest('.to-do-item').remove();
+        toDoList.splice(index, 1);
+        localStorage.setItem('toDoList', JSON.stringify(toDoList));
+    };
+
     const showTask = (value) => {
         outField.insertAdjacentHTML('beforeEnd', `
             <div class="to-do-item">
@@ -16,6 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
         `);
+        const deleteButtons = document.querySelectorAll('.trash-icon');
+
+        deleteButtons.forEach((item) => {
+            item.addEventListener('click', removeTask);
+        });
     };
 
     if (localStorage.getItem('toDoList') !== null) {
@@ -26,30 +45,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+
     const addTask = () => {
         if (addToDoInput.value === '') return;
 
         showTask(addToDoInput.value);
-        
+
+
         toDoList.push({checked: false, value: addToDoInput.value});
         localStorage.setItem('toDoList', JSON.stringify(toDoList));
     };
 
     addToDoBtn.addEventListener('click', addTask); 
 });
-
-  // const deleteToDoBtn = document.querySelectorAll('.trash-icon');
-
-        // toDoList.push({checked: false, value: addToDoInput.value});
-
-        // localStorage.setItem('toDoList', JSON.stringify(toDoList));
-
-
-        // deleteToDoBtn.forEach((item, index) => {
-        //     item.addEventListener('click', (event) => {
-        //         event.target.closest('.to-do-item').remove();
-        //         toDoList.splice(index, 1);
-        //         console.log(index);
-        //         localStorage.setItem('toDoList', JSON.stringify(toDoList));
-        //     });
-        // });
