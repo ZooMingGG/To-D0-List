@@ -53,3 +53,42 @@ body {
     margin: 50% 0 0 0;
     transform: translateY(-50%);
 }
+
+.to-do-item {
+    border-top: 1px solid #f1f1f1;
+    max-width: 320px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.to-do-item .to-do-item-text {
+    width: 235px;
+    margin: 0 0 0 -5px;
+    word-break: break-all;
+    font-size: 22px;
+    color: #000000;
+}
+
+.to-do-item .to-do-item-checkbox {
+    margin: 0 0 0 10px;
+}
+
+.to-do-item .to-do-item-checkbox:checked ~ .to-do-item-text {
+    color: #dadada;
+    text-decoration: line-through;
+}
+
+.to-do-item .trash-icon {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.to-do-item .trash {
+    display: flex;
+    justify-content: flex-end;
+    width: 30px;
+    padding: 0 10px 0 0;
+}
