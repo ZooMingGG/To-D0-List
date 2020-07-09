@@ -4,31 +4,52 @@ document.addEventListener('DOMContentLoaded', () => {
           addToDoInput = document.querySelector('#input'),
           outField = document.querySelector('#output');
     
-    const toDoList = [];     
+    let toDoList = [];
 
-    addToDoBtn.addEventListener('click', () => {
-        if (addToDoInput.value === '') return;
-
+    const showTask = (value) => {
         outField.insertAdjacentHTML('beforeEnd', `
             <div class="to-do-item">
                 <input class="to-do-item-checkbox" type="checkbox">
-                <div class="to-do-item-text">${addToDoInput.value}</div>
+                <div class="to-do-item-text">${value}</div>
                 <div class="trash">
                     <img class="trash-icon" src="./images/trash.svg" alt="Trash icon">
                 </div>
             </div>
         `);
+    };
 
-        toDoList.push({checked: false, value: addToDoInput.value});
+    if (localStorage.getItem('toDoList') !== null) {
+        toDoList = JSON.parse( localStorage.getItem('toDoList') );
 
-        localStorage.setItem('toDoList', JSON.stringify(toDoList));
-
-        const deleteToDoBtn = document.querySelectorAll('.trash-icon');
-
-        deleteToDoBtn.forEach((item) => {
-            item.addEventListener('click', (event) => {
-                event.target.closest('.to-do-item').remove();
-            });
+        toDoList.forEach((item) => {
+            showTask(item.value);
         });
-    }); 
+    }
+
+    const addTask = () => {
+        if (addToDoInput.value === '') return;
+
+        showTask(addToDoInput.value);
+        
+        toDoList.push({checked: false, value: addToDoInput.value});
+        localStorage.setItem('toDoList', JSON.stringify(toDoList));
+    };
+
+    addToDoBtn.addEventListener('click', addTask); 
 });
+
+  // const deleteToDoBtn = document.querySelectorAll('.trash-icon');
+
+        // toDoList.push({checked: false, value: addToDoInput.value});
+
+        // localStorage.setItem('toDoList', JSON.stringify(toDoList));
+
+
+        // deleteToDoBtn.forEach((item, index) => {
+        //     item.addEventListener('click', (event) => {
+        //         event.target.closest('.to-do-item').remove();
+        //         toDoList.splice(index, 1);
+        //         console.log(index);
+        //         localStorage.setItem('toDoList', JSON.stringify(toDoList));
+        //     });
+        // });
