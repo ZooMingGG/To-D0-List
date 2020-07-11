@@ -6,25 +6,46 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let toDoList = [];
 
-    const removeTask = (event) => {
-        let index;
-
-        toDoList.forEach((item, i) => {
-            if (item === index) {
-                index = i;
-            }
-        });
-
-        event.target.closest('.to-do-item').remove();
-        toDoList.splice(index, 1);
-        localStorage.setItem('toDoList', JSON.stringify(toDoList));
-    };
-
-    const addhandler = () => {
+    const addHandlers = () => {
         const deleteButtons = document.querySelectorAll('.trash-icon');
+        const checkboxList = document.querySelectorAll('.to-do-item-checkbox');
+
+        const removeTask = (event) => {
+            const deleteButtons = document.querySelectorAll('.trash-icon');
+            let index;
+            
+            deleteButtons.forEach((item, i) => {
+                if (item === event.target) {
+                    index = i;
+                }
+            });
+
+            event.target.closest('.to-do-item').remove();
+            toDoList.splice(index, 1);
+            localStorage.setItem('toDoList', JSON.stringify(toDoList));
+        };
+
+        const checkTask = (event) => {
+            const checkboxList = document.querySelectorAll('.to-do-item-checkbox');
+            let index;
+
+            checkboxList.forEach((item, i) => {
+                if (item === event.target) {
+                    index = i;
+                }
+            });
+
+            toDoList[index].checked = checkboxList[index].checked;
+
+            localStorage.setItem('toDoList', JSON.stringify(toDoList));
+        };
 
         deleteButtons.forEach((item) => {
-            item.addEventListener('click', removeTask);
+            item.onclick = removeTask;
+        });
+
+        checkboxList.forEach((item) => {
+            item.onclick = checkTask;
         });
     };
 
@@ -38,8 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
         `);
-        
-        addhandler();
+
+        addHandlers();
     };
 
     const showSavedTasks = () => {
@@ -49,6 +70,14 @@ document.addEventListener('DOMContentLoaded', () => {
             toDoList.forEach((item) => {
                 showTask(item.value);
             });
+
+            if (toDoList.length > 0) {
+                const checkbox = document.querySelectorAll('.to-do-item-checkbox');
+
+                toDoList.forEach((item, index) => {
+                    checkbox[index].checked = item.checked;
+                });
+            }
         }
     };
 
@@ -63,5 +92,10 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('toDoList', JSON.stringify(toDoList));
     };
 
+    addToDoInput.addEventListener('keydown', (event) => {
+        if (event.code === 'Enter') {
+            addTask();
+        }
+    });
     addToDoBtn.addEventListener('click', addTask); 
 });
