@@ -20,6 +20,14 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('toDoList', JSON.stringify(toDoList));
     };
 
+    const addhandler = () => {
+        const deleteButtons = document.querySelectorAll('.trash-icon');
+
+        deleteButtons.forEach((item) => {
+            item.addEventListener('click', removeTask);
+        });
+    };
+
     const showTask = (value) => {
         outField.insertAdjacentHTML('beforeEnd', `
             <div class="to-do-item">
@@ -30,27 +38,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
         `);
-        const deleteButtons = document.querySelectorAll('.trash-icon');
-
-        deleteButtons.forEach((item) => {
-            item.addEventListener('click', removeTask);
-        });
+        
+        addhandler();
     };
 
-    if (localStorage.getItem('toDoList') !== null) {
-        toDoList = JSON.parse( localStorage.getItem('toDoList') );
+    const showSavedTasks = () => {
+        if (localStorage.getItem('toDoList') !== null) {
+            toDoList = JSON.parse( localStorage.getItem('toDoList') );
+    
+            toDoList.forEach((item) => {
+                showTask(item.value);
+            });
+        }
+    };
 
-        toDoList.forEach((item) => {
-            showTask(item.value);
-        });
-    }
-
+    showSavedTasks();
 
     const addTask = () => {
         if (addToDoInput.value === '') return;
 
         showTask(addToDoInput.value);
-
 
         toDoList.push({checked: false, value: addToDoInput.value});
         localStorage.setItem('toDoList', JSON.stringify(toDoList));
